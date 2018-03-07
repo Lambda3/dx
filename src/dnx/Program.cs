@@ -14,15 +14,56 @@ namespace Dnx
             Initialize();
             var arguments = new MainArgs(args);
             var (found, binary) = FindBinaryInPath(arguments.Command);
+            var installed = false;
             if (!found)
+            {
                 (found, binary) = Install(arguments.Package, arguments.Version, arguments.Command, arguments.Verbose);
+                installed = found;
+            }
             else if (arguments.Verbose)
+            {
                 WriteLine($"Tool {arguments.Command} already installed.");
+            }
             if (!found)
                 return 1;
-            return Run(binary, arguments.Arguments, arguments.Verbose, showStdout: true);
+            var exitCode = Run(binary, arguments.Arguments, arguments.Verbose, showStdout: true);
+            if (arguments.Remove)
+            {
+                if (installed)
+                    Remove(binary, arguments.Verbose);
+                else if (arguments.Verbose)
+                    WriteLine($"Not going to remove already installed tool {arguments.Command}.");
+            }
+            return exitCode;
         }
 
+        private static void Remove(string binary, bool verbose)
+        {
+            if (verbose)
+                WriteLine($"Tool {binary} was installed and is going to be removed.");
+            SafeDelete(binary, verbose);
+            var configFile = $"{binary}.config";
+            if (File.Exists(configFile))
+            {
+                if (verbose)
+                    WriteLine($"Config file {configFile} is also going to be removed.");
+                SafeDelete(configFile, verbose);
+            }
+        }
+
+        private static void SafeDelete(string file, bool verbose)
+        {
+            try
+            {
+                File.Delete(file);
+            }
+            catch (Exception ex)
+            {
+                WriteErrorLine($"Could not delete {file}.");
+                if (verbose)
+                    WriteErrorLine($"Exception:\n{ex.Message}");
+            }
+        }
 
         private static void Initialize() => defaultConsoleColor = Console.ForegroundColor;
 

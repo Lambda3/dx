@@ -4,23 +4,12 @@ A tool that helps you run .NET tools without first having to install them.
 
 .NET global tools are a new feature in .NET 2.1, which is currently in preview.
 
-## Installing
 
+## Synopsis
 
-Install .NET Core CLI at least 2.1 from [microsoft.com](https://www.microsoft.com/net/download/all).
-
-Then run:
 
 ```bash
-dotnet install tool -g dnx
-```
-
-## Running
-
-Run `dnx` from the command line, for example:
-
-```bash
-dnx tool params
+dnx [options] <command> [--] [<arguments>]...
 ```
 
 For example, for `dotnetsay`:
@@ -31,13 +20,24 @@ dnx dotnetsay Hello World!
 
 The output will be exactly the same as if the tool was installed and then executed.
 
+## Install
+
+
+Install .NET Core CLI at least 2.1 from [microsoft.com](https://www.microsoft.com/net/download/all),
+then run:
+
+```bash
+dotnet install tool -g dnx
+```
+
 ### Parameters
 
-Call `dnx` with `--help`  to see possible options. Here we document a few:
+Run `dnx` with `--help`  to see possible options. Here we document a few:
 
-* `--package` allows you to specify a package name different from the command name
-* `--package-version` allows you to specify a version different from latest
-* `--verbose` shows you logs about installing, execution and debuggin
+* `--rm` Removes the executable if it was installed. You can also set the environment variable `DNX_REMOVE_AFTER_RUN` to `true` so you don't have to set it every time.
+* `--package` allows you to specify a package name different from the command name.
+* `--package-version` allows you to specify a version different from latest.
+* `--verbose` shows you logs about installing, execution and debuggin.
 
 Use `--` to separate `dnx` parameters from tool parameters.
 
