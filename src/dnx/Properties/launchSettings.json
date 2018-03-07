@@ -2,7 +2,7 @@
   "profiles": {
     "dnx": {
       "commandName": "Project",
-      "commandLineArgs": "dotnetsay foo bar"
+      "commandLineArgs": "--package-version 1.0.0 dotnetsay --package dotnetsay hello dotnet"
     }
   }
 }

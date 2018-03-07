@@ -25,10 +25,27 @@ dnx tool params
 
 For example, for `dotnetsay`:
 
-
 ```bash
 dnx dotnetsay Hello World!
 ```
+
+The output will be exactly the same as if the tool was installed and then executed.
+
+### Parameters
+
+Call `dnx` with `--help`  to see possible options. Here we document a few:
+
+* `--package` allows you to specify a package name different from the command name
+* `--package-version` allows you to specify a version different from latest
+* `--verbose` shows you logs about installing, execution and debuggin
+
+Use `--` to separate `dnx` parameters from tool parameters.
+
+### Exit code
+
+The tool will exit with 1 if installation failed of dotnet was not found.
+
+If the installation is successful then the executed application exit code will be used as exit code.
 
 ## Testing install during development
 

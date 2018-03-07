@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <RootNamespace>Dnx</RootNamespace>
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
     <Authors>Lambda3</Authors>
     <PackageTags>dotnet</PackageTags>
     <RepositoryUrl>https://github.com/Lambda3/dnx.git</RepositoryUrl>
@@ -13,5 +13,9 @@
     <PackageProjectUrl>https://github.com/Lambda3/dnx</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="docopt.net" Version="0.6.1.9" />
+  </ItemGroup>
 
 </Project>

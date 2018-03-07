@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Dnx
@@ -13,52 +12,54 @@ namespace Dnx
         static int Main(string[] args)
         {
             Initialize();
-            if (args.Length == 0)
-            {
-                ShowHelp();
-                return 1;
-            }
-            var (command, arguments) = (args[0], args.Skip(1).ToArray());
-            var (found, binary) = FindBinaryInPath(command);
+            var arguments = new MainArgs(args);
+            var (found, binary) = FindBinaryInPath(arguments.Command);
             if (!found)
-                (found, binary) = Install(command);
+                (found, binary) = Install(arguments.Package, arguments.Version, arguments.Command, arguments.Verbose);
+            else if (arguments.Verbose)
+                WriteLine($"Tool {arguments.Command} already installed.");
             if (!found)
                 return 1;
-            return Run(binary, arguments);
+            return Run(binary, arguments.Arguments, arguments.Verbose, showStdout: true);
         }
 
-        private static void ShowHelp() => WriteLine(@"dnx - The .NET Runner tool
-
-Usage:
-dnx command arguments");
 
         private static void Initialize() => defaultConsoleColor = Console.ForegroundColor;
 
-        private static int Run(string binary, string[] arguments)
+        private static int Run(string binary, string[] arguments, bool verbose, bool showStdout)
         {
-            var startInfo = new ProcessStartInfo(binary, string.Join(' ', arguments))
+            if (verbose)
+                showStdout = true;
+            var argumentsString = string.Join(' ', arguments);
+            if (verbose)
+                WriteLine($"Running: {binary} {argumentsString}");
+            var startInfo = new ProcessStartInfo(binary, argumentsString)
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false
             };
             var process = new Process() { StartInfo = startInfo };
-            process.OutputDataReceived += (sender, e) => WriteLine(e.Data);
+            if (showStdout)
+                process.OutputDataReceived += (sender, e) => WriteLine(e.Data);
             process.ErrorDataReceived += (sender, e) => WriteErrorLine(e.Data);
             process.Start();
-            process.BeginOutputReadLine();
+            if (showStdout)
+                process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             process.WaitForExit();
             return process.ExitCode;
         }
 
-        private static (bool found, string binary) Install(string command)
+        private static (bool found, string binary) Install(string package, string version, string command, bool verbose)
         {
+            if (verbose)
+                WriteLine("Tool not found, installing...");
             var (dotnetFound, dotnet) = FindDotNet();
             if (!dotnetFound)
                 return (false, null);
-            var arguments = $"install tool -g {command}".Split(' ');
-            var exitCode = Run(dotnet, arguments);
+            var arguments = $"install tool -g {(version == null ? "" : $"--version {version}")} {package}".Trim().Split(' ');
+            var exitCode = Run(dotnet, arguments, verbose, false);
             if (exitCode != 0)
             {
                 WriteErrorLine("Could not install.");
