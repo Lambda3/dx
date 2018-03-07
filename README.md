@@ -7,7 +7,7 @@ A tool that helps you run .NET tools without first having to install them.
 ## Installing
 
 
-Install .NET CLI at least 2.1 from [dot.net](https://dot.net).
+Install .NET Core CLI at least 2.1 from [microsoft.com](https://www.microsoft.com/net/download/all).
 
 Then run:
 
