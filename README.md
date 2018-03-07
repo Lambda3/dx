@@ -1,6 +1,8 @@
 # DNX - .NET Execute
 
-This tool helps you run .NET Tools without first having to install it.
+A tool that helps you run .NET tools without first having to install them.
+
+.NET global tools are a new feature in .NET 2.1, which is currently in preview.
 
 ## Installing
 
