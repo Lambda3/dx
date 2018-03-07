@@ -28,6 +28,12 @@ For example, for `dotnetsay`:
 dnx dotnetsay Hello World!
 ```
 
+## Testing install during development
+
+Just cd to `src/dnx` and run `dotnet pack -C Release -o ../nupkg`.
+
+Then cd to `src/nupkg` and run `dotnet install tool -g dnx`.
+
 ## Maintainers/Core team
 
 * [Giovanni Bassi](http://blog.lambda3.com.br/L3/giovannibassi/), aka Giggio, [Lambda3](http://www.lambda3.com.br), [@giovannibassi](https://twitter.com/giovannibassi)
