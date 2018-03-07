@@ -5,13 +5,20 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <RootNamespace>Dnx</RootNamespace>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Lambda3</Authors>
     <PackageTags>dotnet</PackageTags>
     <RepositoryUrl>https://github.com/Lambda3/dnx.git</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/lambda3/dnx/blob/master/LICENSE.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Lambda3/dnx</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
+    <Description>A tool that helps you run .NET tools without first having to install them.
+
+Install with the .NET CLI 2.1 or newer:
+dotnet install tool -g dnx
+
+Run dnx from the command line, for example, for dotnetsay:
+dnx dotnetsay Hello World!</Description>
   </PropertyGroup>
 
   <ItemGroup>
