@@ -15,21 +15,22 @@ namespace Dnx
             Initialize();
             if (args.Length == 0)
             {
-                WriteLine(@"dnx - The .NET Runner tool
-
-Usage:
-dnx command arguments");
+                ShowHelp();
                 return 1;
             }
-            var command = args[0];
-            var arguments = args.Skip(1).ToArray();
-            var (binary, found) = FindBinary(command);
+            var (command, arguments) = (args[0], args.Skip(1).ToArray());
+            var (found, binary) = FindBinaryInPath(command);
             if (!found)
-                (binary, found) = Install(command);
+                (found, binary) = Install(command);
             if (!found)
                 return 1;
             return Run(binary, arguments);
         }
+
+        private static void ShowHelp() => WriteLine(@"dnx - The .NET Runner tool
+
+Usage:
+dnx command arguments");
 
         private static void Initialize() => defaultConsoleColor = Console.ForegroundColor;
 
@@ -51,36 +52,24 @@ dnx command arguments");
             return process.ExitCode;
         }
 
-        private static (string, bool) Install(string command)
+        private static (bool found, string binary) Install(string command)
         {
-            var (dotnet, dotnetFound) = FindDotNet();
+            var (dotnetFound, dotnet) = FindDotNet();
             if (!dotnetFound)
-                return (null, false);
-            var arguments = $"install tool -g {command}";
-            var startInfo = new ProcessStartInfo(dotnet, arguments)
-            {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false
-            };
-            var process = new Process() { StartInfo = startInfo };
-            process.OutputDataReceived += (sender, e) => WriteLine(e.Data);
-            process.ErrorDataReceived += (sender, e) => WriteErrorLine(e.Data);
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            process.WaitForExit();
-            if (process.ExitCode != 0)
+                return (false, null);
+            var arguments = $"install tool -g {command}".Split(' ');
+            var exitCode = Run(dotnet, arguments);
+            if (exitCode != 0)
             {
                 WriteErrorLine("Could not install.");
-                return (null, false);
+                return (false, null);
             }
-            return FindBinary(command);
+            return FindBinaryInPath(command);
         }
 
-        private static (string, bool) FindDotNet() => FindBinary("dotnet");
+        private static (bool found, string binary) FindDotNet() => FindBinaryInPath("dotnet");
 
-        private static (string, bool) FindBinary(string command)
+        private static (bool found, string binary) FindBinaryInPath(string command)
         {
             var pathEnv = Environment.GetEnvironmentVariable("PATH");
             var paths = pathEnv.Split(Path.PathSeparator);
@@ -88,17 +77,13 @@ dnx command arguments");
             {
                 var correctPath = GetPath(path, command);
                 if (File.Exists(correctPath))
-                    return (correctPath, true);
+                    return (true, correctPath);
             }
-            return (null, false);
+            return (false, null);
         }
 
-        private static string GetPath(string path, string command)
-        {
-            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-            var commandForWindows = isWindows ? $"{command}.exe" : command; // todo linux
-            return Path.Combine(path, commandForWindows);
-        }
+        private static string GetPath(string path, string command) =>
+            Path.Combine(path, RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? $"{command}.exe" : command);
 
         private static readonly object sync = new object();
 
