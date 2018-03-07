@@ -8,6 +8,10 @@
     <Version>0.0.1</Version>
     <Authors>Lambda3</Authors>
     <PackageTags>dotnet</PackageTags>
+    <RepositoryUrl>https://github.com/Lambda3/dnx.git</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/lambda3/dnx/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Lambda3/dnx</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
 </Project>
