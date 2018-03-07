@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "dnx": {
+      "commandName": "Project",
+      "commandLineArgs": "dotnetsay foo bar"
+    }
+  }
+}

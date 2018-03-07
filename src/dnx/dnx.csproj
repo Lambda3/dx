@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackAsTool>true</PackAsTool>
+    <RootNamespace>Dnx</RootNamespace>
+    <Version>0.0.1</Version>
+    <Authors>Lambda3</Authors>
+    <PackageTags>dotnet</PackageTags>
+  </PropertyGroup>
+
+</Project>
