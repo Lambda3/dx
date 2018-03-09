@@ -1,11 +1,11 @@
-Push-Location $PSScriptRoot\..\dnx
+Push-Location $PSScriptRoot\..\dx
 dotnet pack -c Release -o ..\nupkg
 if ($LASTEXITCODE -ne 0) { exit }
 Pop-Location
-if (Test-Path $HOME\.dotnet\tools\dnx.exe) {
-    Remove-Item $HOME\.dotnet\tools\dnx.exe
+if (Test-Path $HOME\.dotnet\tools\dx.exe) {
+    Remove-Item $HOME\.dotnet\tools\dx.exe
 }
-if (Test-Path $HOME\.dotnet\tools\dnx.exe.config) {
-    Remove-Item $HOME\.dotnet\tools\dnx.exe.config
+if (Test-Path $HOME\.dotnet\tools\dx.exe.config) {
+    Remove-Item $HOME\.dotnet\tools\dx.exe.config
 }
-dotnet install tool -g dnx
+dotnet install tool -g dx

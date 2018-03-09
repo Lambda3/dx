@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "dnx": {
+    "dx": {
       "commandName": "Project",
       "commandLineArgs": "--package-version 1.0.0 dotnetsay --package dotnetsay hello dotnet"
     }

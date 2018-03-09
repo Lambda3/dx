@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Dnx
+namespace Dx
 {
     public class MainArgs
     {
-        private const string usage = @"dnx - The .NET Runner tool
+        private const string usage = @"dx - The .NET Runner tool
 
 Usage:
-  dnx [options] <command> [--] [<arguments>]...
+  dx [options] <command> [--] [<arguments>]...
 
 Options:
   --rm                              Remove the tool after use
@@ -39,7 +39,7 @@ Options:
             var boolVar = false;
             try
             {
-                boolVar = Convert.ToBoolean(Environment.GetEnvironmentVariable($"DNX_{var}"));
+                boolVar = Convert.ToBoolean(Environment.GetEnvironmentVariable($"DX_{var}"));
             }
             catch { }
             return boolVar;
