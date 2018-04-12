@@ -30,39 +30,11 @@ namespace Dx
             if (arguments.Remove)
             {
                 if (installed)
-                    Remove(binary, arguments.Verbose);
+                    Uninstall(arguments.Package, arguments.Verbose);
                 else if (arguments.Verbose)
                     WriteLine($"Not going to remove already installed tool {arguments.Command}.");
             }
             return exitCode;
-        }
-
-        private static void Remove(string binary, bool verbose)
-        {
-            if (verbose)
-                WriteLine($"Tool {binary} was installed and is going to be removed.");
-            SafeDelete(binary, verbose);
-            var configFile = $"{binary}.config";
-            if (File.Exists(configFile))
-            {
-                if (verbose)
-                    WriteLine($"Config file {configFile} is also going to be removed.");
-                SafeDelete(configFile, verbose);
-            }
-        }
-
-        private static void SafeDelete(string file, bool verbose)
-        {
-            try
-            {
-                File.Delete(file);
-            }
-            catch (Exception ex)
-            {
-                WriteErrorLine($"Could not delete {file}.");
-                if (verbose)
-                    WriteErrorLine($"Exception:\n{ex.Message}");
-            }
         }
 
         private static void Initialize() => defaultConsoleColor = Console.ForegroundColor;
@@ -92,6 +64,17 @@ namespace Dx
             return process.ExitCode;
         }
 
+        private static void Uninstall(string package, bool verbose)
+        {
+            if (verbose)
+                WriteLine($"Tool {package} was installed and is going to be removed.");
+            var (dotnetFound, dotnet) = FindDotNet();
+            var arguments = $"tool uninstall -g {package}".Trim().Split(' ');
+            var exitCode = Run(dotnet, arguments, verbose, false);
+            if (exitCode != 0)
+                WriteErrorLine("Could not uninstall.");
+        }
+
         private static (bool found, string binary) Install(string package, string version, string command, bool verbose)
         {
             if (verbose)
@@ -99,7 +82,7 @@ namespace Dx
             var (dotnetFound, dotnet) = FindDotNet();
             if (!dotnetFound)
                 return (false, null);
-            var arguments = $"install tool -g {(version == null ? "" : $"--version {version}")} {package}".Trim().Split(' ');
+            var arguments = $"tool install -g {(version == null ? "" : $"--version {version}")} {package}".Trim().Split(' ');
             var exitCode = Run(dotnet, arguments, verbose, false);
             if (exitCode != 0)
             {
@@ -109,7 +92,16 @@ namespace Dx
             return FindBinaryInPath(command);
         }
 
-        private static (bool found, string binary) FindDotNet() => FindBinaryInPath("dotnet");
+        private static string dotnetPath;
+        private static (bool found, string binary) FindDotNet()
+        {
+            if (dotnetPath != null)
+                return (true, dotnetPath);
+            var (found, binary) = FindBinaryInPath("dotnet");
+            if (found)
+                dotnetPath = binary;
+            return (found, binary);
+        }
 
         private static (bool found, string binary) FindBinaryInPath(string command)
         {

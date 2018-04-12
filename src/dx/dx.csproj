@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <RootNamespace>Dx</RootNamespace>
-    <Version>0.3.0</Version>
+    <Version>0.4.0</Version>
     <Authors>Lambda3</Authors>
     <PackageTags>dotnet</PackageTags>
     <RepositoryUrl>https://github.com/Lambda3/dx.git</RepositoryUrl>
@@ -15,7 +15,7 @@
     <Description>A tool that helps you run .NET tools without first having to install them.
 
 Install with the .NET CLI 2.1 or newer:
-dotnet install tool -g dx
+dotnet tool install -g dx
 
 Run dx from the command line, for example, for dotnetsay:
 dx dotnetsay Hello World!</Description>

@@ -27,7 +27,7 @@ Install .NET Core CLI at least 2.1 from [microsoft.com](https://www.microsoft.co
 then run:
 
 ```bash
-dotnet install tool -g dx
+dotnet tool install -g dx
 ```
 
 ### Parameters

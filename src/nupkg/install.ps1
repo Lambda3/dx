@@ -8,4 +8,4 @@ if (Test-Path $HOME\.dotnet\tools\dx.exe) {
 if (Test-Path $HOME\.dotnet\tools\dx.exe.config) {
     Remove-Item $HOME\.dotnet\tools\dx.exe.config
 }
-dotnet install tool -g dx
+dotnet tool install -g dx
