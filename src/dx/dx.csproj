@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <RootNamespace>Dx</RootNamespace>
-    <Version>0.4.0</Version>
+    <Version>0.5.0</Version>
     <Authors>Lambda3</Authors>
     <PackageTags>dotnet</PackageTags>
     <RepositoryUrl>https://github.com/Lambda3/dx.git</RepositoryUrl>
